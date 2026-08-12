@@ -1,0 +1,20 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "a8u7ZXHgpKf_GpDLuMd3f"
+uri = "file://db-scripts/rsv-dms-database-scripts.txt"
+type = "text"
+title = "RSV DMS — PostgreSQL + MySQL Schema Scripts"
+
+[[outputs]]
+id = "CgJDWJPbhOEFBIup5QJe0"
+uri = "file://db-scripts/RSV-DMS-Knowledge-Transfer.md"
+type = "text"
+title = "RSV DMS — Full Knowledge Transfer Kit"
+
+[[outputs]]
+id = "qNFg1HUfY0T_cbmhDK4pA"
+uri = "file://rsv_infotech_schema.txt"
+type = "text"
+title = "RSV Infotech — Complete PostgreSQL Schema (.sql)"
