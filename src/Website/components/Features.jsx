@@ -1,28 +1,16 @@
 import FeatureCard from "./FeatureCard";
 
-import dashboard from "../assets/sales.jpg";
-import projects from "../assets/purchase.jpg";
-import documents from "../assets/GST.jpg";
-import inventory from "../assets/expense.jpg";
-import directory from "../assets/purchase.jpg";
-import accounting from "../assets/GST.jpg";
-import system from "../assets/sales.jpg";
-import operations from "../assets/purchase.jpg";
-import services from "../assets/GST.jpg";
+
+import documents from "../assets/document.png";
+import inventory from "../assets/inventory.png";
+import directory from "../assets/directory.png";
+import accounting from "../assets/accounts.png";
+import system from "../assets/system.png";
+import operations from "../assets/operations.png";
+
 
 const features = [
-  {
-    title: "Dashboard",
-    description:
-      "A single, real-time view of every company — revenue, orders, stock and people at a glance.",
-    image: dashboard,
-  },
-  {
-    title: "Projects",
-    description:
-      "Plan, assign and track work across teams and companies, with timelines that stay up to date.",
-    image: projects,
-  },
+
   {
     title: "Documents",
     description:
@@ -59,12 +47,7 @@ const features = [
       "Purchasing, approvals and day-to-day processes that keep every entity running smoothly.",
     image: operations,
   },
-  {
-    title: "Services",
-    description:
-      "Manage service jobs, bookings and delivery so client work stays on schedule and on budget.",
-    image: services,
-  },
+  
 ];
 
 export default function Features() {

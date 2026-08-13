@@ -2,7 +2,7 @@ import BizOneLogo from "./BizOneLogo";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#EAECF0] bg-white">
+    <footer className=" bg-[#FFFFFF]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 lg:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr]">
           {/* Brand */}

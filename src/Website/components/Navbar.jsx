@@ -15,8 +15,8 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex h-[75px] max-w-7xl items-center justify-between px-3 ">
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -29,7 +29,7 @@ export default function Navbar() {
             <a
               key={item.label}
               href={item.href}
-              className={`text-[14px] font-medium transition ${
+              className={`text-[16px] font-medium transition ${
                 item.label === "Home"
                   ? "text-[#2563EB]"
                   : "text-[#4B5563] hover:text-[#2563EB]"
@@ -44,17 +44,20 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <Link
             href="/login"
-            className="rounded-[16px] border border-gray-200 bg-white px-5 py-2 text-[14px] font-medium text-[#111827] transition hover:border-blue-500 hover:text-blue-600"
+            className="rounded-[15px] border border-gray-200 bg-white px-5 py-2 shadow-md text-base font-semibold text-gray-700 transition hover:border-blue-500 hover:text-blue-600 hover:shadow-lg"
           >
             Login
           </Link>
 
           <Link
             href="/register"
-            className="group flex items-center justify-center gap-2 rounded-[16px] bg-[#2563EB] px-5 py-2 text-base font-semibold text-white transition duration-300 hover:bg-[#1D4ED8] hover:shadow-xl"
+            className="group flex items-center justify-center gap-2 rounded-[15px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-5 py-2 text-base font-semibold text-white transition duration-300 hover:bg-[#1D4ED8] hover:shadow-xl"
           >
             Start Free Trial
-            <ArrowRight size={18} className="transition group-hover:translate-x-1" />
+            <ArrowRight
+              size={18}
+              className="transition group-hover:translate-x-1"
+            />
           </Link>
         </div>
 
@@ -72,7 +75,10 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenu && (
-        <div id="mobile-menu" className="w-full overflow-hidden border-t bg-white lg:hidden">
+        <div
+          id="mobile-menu"
+          className="w-full overflow-hidden border-t bg-white lg:hidden"
+        >
           <div className="flex flex-col px-4 py-4 sm:px-6">
             {navItems.map((item) => (
               <a
@@ -96,7 +102,7 @@ export default function Navbar() {
             <Link
               href="/register"
               onClick={() => setMobileMenu(false)}
-              className="mt-3 rounded-lg bg-[#2563EB] py-3 text-center font-semibold text-white hover:bg-[#1D4ED8]"
+              className="mt-3 rounded-lg bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] py-3 text-center font-semibold text-white hover:bg-[#1D4ED8]"
             >
               Start Free Trial
             </Link>

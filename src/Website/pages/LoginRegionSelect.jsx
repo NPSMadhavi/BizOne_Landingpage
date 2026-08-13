@@ -16,7 +16,7 @@ export default function LoginRegionSelect() {
 
           <Link
             href="/"
-            className="group flex items-center gap-2 text-md font-medium text-[#2563EB]  transition-colors hover:text-[#1D4ED8]"
+            className="group flex items-center gap-2 text-md font-medium text-[#2563EB] transition-colors hover:text-[#1D4ED8]"
           >
             <ArrowLeft
               size={18}
@@ -29,7 +29,7 @@ export default function LoginRegionSelect() {
       </header>
 
       {/* Main */}
-      <main className="relative z-10 flex min-h-[calc(100vh-72px)] items-center justify-center px-6 py-12">
+      <main className="relative z-10 flex min-h-[calc(100vh-72px)] items-center justify-center px-6 py-8 sm:px-8 lg:px-8">
 
         <div className="grid w-full max-w-[1100px] overflow-hidden rounded-[32px] border border-[#DCE6F3] bg-white shadow-[0_25px_70px_rgba(37,99,235,0.10)] lg:grid-cols-[0.85fr_1.15fr]">
 
@@ -41,13 +41,14 @@ export default function LoginRegionSelect() {
 
             <div className="relative z-10">
 
-              <div className="mb-6 flex h-16 w-[220px] items-center justify-center bg-[#F0F7FF] text-xl font-bold text-white ">
-                <Link href="/" className="flex items-center">
-            <BizOneLogo className="h-15 w-auto" />
-          </Link>
+              {/* BizOne Logo - Centered at Top */}
+              <div className="mb-5 lg:mb-9 flex w-full items-center">
+                <Link href="/" className="flex items-center ">
+                  <BizOneLogo className="h-16 w-auto" />
+                </Link>
               </div>
 
-              <h1 className="max-w-sm text-2xl font-semibold leading-tight tracking-tight text-[#101828] sm:text-4xl">
+              <h1 className="max-w-sm text-2xl font-semibold leading-tight tracking-tight text-[#101828] sm:text-3xl md:text-4xl">
                 Welcome to
                 <span className="block bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] bg-clip-text text-transparent">
                   BizOne
@@ -93,8 +94,8 @@ export default function LoginRegionSelect() {
             <div className="max-w-xl">
 
               <span className="rounded-full border border-blue-200 bg-blue-50 px-5 py-2 text-sm font-medium text-blue-700">
-              ✦ Account Access
-            </span>
+                ✦ Account Access
+              </span>
 
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[#101828]">
                 Choose your region

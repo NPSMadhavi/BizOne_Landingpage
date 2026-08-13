@@ -15,30 +15,31 @@ export default function FeatureCard({
         min-w-0
         overflow-hidden
         rounded-[18px]
-        bg-[#EEF0F2]
+        bg-[#FFFFFF]
         p-3
         shadow-none
         transition-shadow
         duration-300
-        hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]
+        hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] 
         sm:rounded-[19px]
-        sm:p-4
-        lg:rounded-[20px]
+          lg:rounded-[20px]
       "
     >
 
       {/* Card Content */}
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
 
         {/* Title */}
         <h3
           className="
             text-[14px]
+            md:text-[18px]
+            lg:text-[20px]
             font-medium
             leading-5
             text-[#003DA5]
             sm:text-[15px]
-            lg:text-[16px]
+            
           "
         >
           {title}
@@ -49,11 +50,11 @@ export default function FeatureCard({
           className="
             mt-1.5
             min-h-[42px]
-            text-[10px]
+            text-[12px]
+            md:text-[14px]
             leading-[15px]
-            text-[#667085]
-            sm:text-[11px]
-            sm:leading-[16px]
+            text-[#475467]           
+            sm:leading-[17px]
           "
         >
           {description}
@@ -65,10 +66,10 @@ export default function FeatureCard({
             mt-3
             w-full
             overflow-hidden
-            rounded-[10px]
+            rounded-[14px]
+             border-15 border-[#D9EBFF]
             bg-[#E6E9ED]
-            sm:mt-4
-            sm:rounded-[12px]
+        
           "
         >
           <img

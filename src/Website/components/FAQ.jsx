@@ -37,7 +37,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="bg-white py-16 responsive-container">
+    <section className="bg-[#F9FAFB] py-16 responsive-container">
       <div className="mx-auto max-w-7xl px-6">
 
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
