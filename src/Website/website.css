@@ -31,3 +31,46 @@ html {
 .bizone-landing .my-masonry-grid_column > div {
   margin-bottom: 30px;
 }
+/* =========================================================
+   BIZONE CONTENT PROTECTION
+   ========================================================= */
+
+.bizone-landing {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent image dragging */
+.bizone-landing img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+/* Remove blue selection */
+.bizone-landing ::selection {
+  background: transparent;
+  color: inherit;
+}
+
+.bizone-landing ::-moz-selection {
+  background: transparent;
+  color: inherit;
+}
+
+/* Keep form fields usable */
+.bizone-landing input,
+.bizone-landing textarea,
+.bizone-landing select,
+.bizone-landing [contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
