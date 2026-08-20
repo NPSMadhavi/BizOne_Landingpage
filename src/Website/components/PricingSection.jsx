@@ -49,7 +49,7 @@ const plans = [
 
 export default function PricingSection() {
   return (
-    <section id="pricing" className="bg-[#F9FAFB] py-16 responsive-container">
+    <section id="pricing" className="bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] responsive-container">
       <div className="mx-auto max-w-7xl px-6">
 
         {/* Badge */}
@@ -60,38 +60,38 @@ export default function PricingSection() {
         </div>
 
         {/* Heading */}
-        <h2 className="mx-auto mt-6 max-w-4xl text-center text-fluid-lg font-semibold text-[#101828]">
+        <h2 className="mx-auto mt-6 max-w-4xl text-center text-[28px] md:text-[32px] lg:text-[38px] font-medium leading-[1.15] text-[#05216E]">
           Plans that scale with your group
         </h2>
 
-        <p className="mx-auto mt-5 max-w-3xl text-center text-fluid-base leading-8 text-[#667085]">
+        <p className="mx-auto mt-4 max-w-4xl text-center text-[16px] md:text-[17px] lg:text-[18px] leading-6 text-[#6A7282 ]">
           Start free, then choose the plan that fits. Talk to us for pricing tailored to your company count and modules.
         </p>
 
         {/* Pricing Cards */}
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 md:mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className="relative rounded-[32px] border bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-[#4F46E5]"
+              className="relative rounded-[32px] border-[1px] bg-[#FFFFFF] p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-[#0072F8]"
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#4F46E5] px-5 py-2 text-sm font-semibold text-white shadow-lg">
-                  Most Popular
-                </div>
+               <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-5 py-2 text-[12px] font-medium text-white shadow-lg">
+  Most Popular
+</div>
               )}
 
-              <h3 className="text-md font-semibold text-[#101828]">
+              <h3 className="text-[18px] md:text-[20px] lg:text-[22px] font-semibold text-[#071123]">
                 {plan.name}
               </h3>
 
-              <p className="mt-3 text-sm text-[#667085]">
+              <p className="mt-3 text-[16px] md:text-[17px] lg:text-[18px] text-[#6A7282]">
                 {plan.subtitle}
               </p>
 
-              <div className="mt-8">
-                <h1 className="text-3xl font-semibold text-[#101828]">
+              <div className="mt-4">
+                <h1 className="text-[23px] md:text-[25px] lg:text-[28px] font-semibold text-[#071123]">
                   {plan.price}
                 </h1>
               </div>
@@ -109,17 +109,17 @@ export default function PricingSection() {
               <Link
                 href="/register"
                 className="
-    mt-8
+    mt-6
     block
     w-full
-    rounded-xl
+    rounded-[15px]
     border
     border-gray-300
     bg-white
     py-4
     text-center
     font-medium
-    text-[#101828]
+    text-[#071123]
     transition-all
     duration-300
     hover:border-transparent
@@ -134,20 +134,20 @@ export default function PricingSection() {
               </Link>
               
 
-              <div className="mt-10 space-y-5">
+              <div className="mt-6 space-y-2">
                 {plan.features.map((feature) => (
                   <div
                     key={feature}
-                    className="flex items-center gap-3"
+                    className="flex items-center gap-1"
                   >
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100">
+                    <div className="flex h-6 w-6 items-center justify-center ">
                       <Check
-                        size={15}
-                        className="text-green-600"
+                        size={20}
+                          className="text-[#0072F8]"
                       />
                     </div>
 
-                    <span className="text-[#475467]">
+                    <span className="text-[#071123] text-[14px] md:text-[15px] lg:text-[16px]">
                       {feature}
                     </span>
                   </div>

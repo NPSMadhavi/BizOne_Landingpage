@@ -1,4 +1,4 @@
-import CTASection from "../components/CTA";
+import CTASection from "../components/cta&footer";
 import FAQSection from "../components/FAQ";
 import Features from "../components/Features";
 import Hero from "../components/Hero";

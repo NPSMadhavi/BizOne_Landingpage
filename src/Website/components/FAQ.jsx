@@ -30,7 +30,7 @@ const faqs = [
 ];
 
 export default function FAQSection() {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? -1 : index);
@@ -40,20 +40,49 @@ export default function FAQSection() {
     <section className="bg-[#F9FAFB] py-16 responsive-container">
       <div className="mx-auto max-w-7xl px-6">
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+        <div
+          className="
+            grid
+            grid-cols-1
+            gap-12
+            lg:grid-cols-[35%_60%]
+            lg:gap-[5%]
+          "
+        >
 
           {/* Left Side */}
           <div className="min-w-0">
 
-            <h2 className="text-fluid-lg font-medium leading-[1.05] text-[#101828]">
+            <h2
+              className="
+                max-w-[400px]
+                text-[28px]
+                font-medium
+                leading-[1.15]
+                text-[#05216E]
+                md:text-[32px]
+                lg:text-[38px]
+              "
+            >
               Frequently Asked Questions
             </h2>
 
-            <p className="mt-8 w-full text-fluid-sm leading-8 text-[#667085]">
+            <p
+              className="
+                mt-4
+                max-w-[390px]
+                text-[16px]
+                leading-6
+                text-[#6A7282]
+                md:text-[17px]
+                lg:text-[18px]
+              "
+            >
               Everything you need to know about running your companies on BizOne.
             </p>
 
           </div>
+
 
           {/* Right Side */}
           <div className="min-w-0">
@@ -63,27 +92,49 @@ export default function FAQSection() {
                 key={index}
                 className="border-b border-[#EAECF0]"
               >
+
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="flex w-full items-center justify-between py-5 text-left"
+                  className="
+                    flex
+                    w-full
+                    items-center
+                    justify-between
+                    py-5
+                    text-left
+                  "
                 >
-                  <h3 className="text-[18px] font-medium text-[#101828]">
+
+                  <h3
+                    className="
+                      text-[16px]
+                      md:text-[17px]
+                      lg:text-[18px]
+                      font-medium
+                      text-[#071123]
+                    "
+                  >
                     {faq.question}
                   </h3>
 
                   {openIndex === index ? (
                     <Minus
                       size={20}
-                      className="text-[#667085]"
+                      strokeWidth={1.5}
+                      className="shrink-0 text-[#667085]"
                     />
                   ) : (
                     <Plus
                       size={20}
-                      className="text-[#667085]"
+                      strokeWidth={1.5}
+                      className="shrink-0 text-[#071123]"
                     />
                   )}
+
                 </button>
 
+
+                {/* Answer */}
                 <div
                   className={`grid overflow-hidden transition-all duration-300 ${
                     openIndex === index
@@ -92,7 +143,17 @@ export default function FAQSection() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="pb-6 pr-16 text-[14px] leading-8 text-[#667085]">
+                    <p
+                      className="
+                        pb-6
+                        pr-16
+                        text-[14px]
+                        md:text-[15px]
+                        lg:text-[16px]
+                        leading-7
+                        text-[#6A7282]
+                      "
+                    >
                       {faq.answer}
                     </p>
                   </div>

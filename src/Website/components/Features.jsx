@@ -52,7 +52,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="w-full bg-[#F9FAFB] py-10 sm:py-12 lg:py-16 responsive-container">
+    <section id="features" className="w-full bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] responsive-container">
       
       {/* Main Container */}
       <div>
@@ -65,12 +65,12 @@ export default function Features() {
           </div>
 
           {/* Main Heading */}
-          <h2 className="mt-8 text-fluid-lg font-medium leading-[1.15] text-[#101828]">
+          <h2 className="mt-8 text-[28px] md:text-[32px] lg:text-[38px] font-medium leading-[1.15] text-[#05216E]">
             One Platform. Every Business Function
           </h2>
 
           {/* Description */}
-          <p className="mx-auto mt-5 max-w-[620px] text-fluid-sm leading-6 text-[#667085]">
+          <p className="mx-auto mt-4 max-w-4xl text-[16px] md:text-[17px] lg:text-[18px] leading-6 text-[#6A7282]">
             Manage your entire business with integrated modules designed to
             work together seamlessly.
           </p>

@@ -1,27 +1,26 @@
 import {
   Store,
-  ShoppingBag,
-  Calculator,
+  ChartNoAxesCombined,
+  FileText,
   Building2,
-  Factory,
   Wrench,
+  CalendarDays,
 } from "lucide-react";
 
 const businesses = [
   {
     icon: Store,
     title: "Small Businesses",
-    description:
-      "Shop owners getting organized fast",
+    description: "Shop owners getting organized fast",
   },
   {
-    icon: ShoppingBag,
+    icon: ChartNoAxesCombined,
     title: "Traders",
     description:
-      "Optimized performance ensures your analytics load in milliseconds",
+      "Optimized performance ensures your analytics load in milliseconds ",
   },
   {
-    icon: Calculator,
+    icon: FileText,
     title: "Accountants & Professionals",
     description:
       "Invoices, quotations and reports",
@@ -33,13 +32,13 @@ const businesses = [
       "Multiple companies, one platform",
   },
   {
-    icon: Factory,
+    icon: Wrench,
     title: "Manufacturers",
     description:
       "Assets, projects and service jobs",
   },
   {
-    icon: Wrench,
+    icon: CalendarDays,
     title: "Service Providers",
     description:
       "Engineer reports and scheduling",
@@ -48,7 +47,10 @@ const businesses = [
 
 export default function WhoCanUse() {
   return (
-    <section id="about" className="bg-[#F9FAFB] py-16 responsive-container">
+    <section
+      id="about"
+      className="bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] responsive-container"
+    >
       <div className="mx-auto max-w-7xl px-6">
 
         {/* Badge */}
@@ -59,34 +61,91 @@ export default function WhoCanUse() {
         </div>
 
         {/* Heading */}
-        <h2 className="mx-auto mt-6 max-w-4xl text-center text-fluid-lg font-semibold text-[#101828]">
+        <h2 className="mx-auto mt-6 max-w-4xl text-center text-[28px] font-medium leading-[1.15] text-[#05216E] md:text-[32px] lg:text-[38px]">
           Built for every size of business
         </h2>
 
         {/* Description */}
-        <p className="mx-auto mt-5 max-w-3xl text-center text-fluid-base leading-8 text-[#667085]">
-          Whether you're a small shop owner or a growing enterprise, BizOne helps you manage your business with ease
+        <p className="mx-auto mt-4 max-w-4xl text-center text-[16px] leading-6 text-[#6A7282] md:text-[17px] lg:text-[18px]">
+          Whether you're a small shop owner or a growing enterprise, BizOne
+          helps you manage your business with ease
         </p>
 
         {/* Cards */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {businesses.map((business) => {
             const Icon = business.icon;
 
             return (
               <div
                 key={business.title}
-                className="group rounded-3xl border border-gray-200 bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl"
+                className="
+                  group
+                  flex
+                  h-full
+                  min-h-[250px]
+                  flex-col
+                  rounded-3xl
+                  border
+                  border-gray-200
+                  bg-[#FFFFFF]
+                  p-6
+                  transition-all
+                  duration-300
+                  hover:-translate-y-2
+                  hover:border-[#0072F8]
+                  hover:shadow-xl
+                "
               >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white">
-                  <Icon size={28} />
+                {/* Icon */}
+                <div
+                  className="
+                    mb-5
+                    flex
+                    h-14
+                    w-14
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-2xl
+                    bg-blue-50
+                    text-[#0050CB]
+                    transition
+                    duration-300
+                    group-hover:bg-[#0072F8]
+                    group-hover:text-[#FFFFFF]
+                  "
+                >
+                  <Icon size={28} strokeWidth={2} />
                 </div>
 
-                <h3 className="text-2xl font-semibold text-[#101828]">
+                {/* Title */}
+                <h3
+                  className="
+                    text-[18px]
+                    md:text-[20px]
+                    lg:text-[22px]
+                    font-medium
+                    leading-[1.25]
+                    text-[#071123]
+                  "
+                >
                   {business.title}
                 </h3>
 
-                <p className="mt-4 text-[16px] leading-7 text-[#667085]">
+                {/* Description */}
+                <p
+                  className="
+                    mt-3
+                    line-clamp-2
+                    overflow-hidden
+                    text-[16px]
+                    md:text-[17px]
+                    lg:text-[18px]
+                    leading-6
+                    text-[#6A7282]
+                  "
+                >
                   {business.description}
                 </p>
               </div>

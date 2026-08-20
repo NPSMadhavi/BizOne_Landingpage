@@ -4,7 +4,31 @@ import BizOneLogo from "../components/BizOneLogo";
 
 export default function LoginRegionSelect() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#F0F7FF]">
+    <div className="relative min-h-screen overflow-hidden "style={{
+        background: `
+          radial-gradient(
+            63.8% 99.45% at 100% 100%,
+            #FFE8B9 0%,
+            rgba(255, 232, 185, 0) 100%
+          ),
+          radial-gradient(
+            67.27% 104.86% at 100% 28.23%,
+            #FFDBD7 0%,
+            rgba(255, 219, 215, 0) 100%
+          ),
+          radial-gradient(
+            31.42% 60.81% at 9.81% 65.17%,
+            #D8EAFB 0%,
+            rgba(216, 234, 251, 0) 100%
+          ),
+          radial-gradient(
+            56.6% 100% at 50% 0%,
+            #F2F7FB 15.5%,
+            rgba(242, 247, 251, 0) 100%
+          ),
+          #CEE4F8
+        `,
+      }}>
 
       {/* Background Glow */}
       <div className="pointer-events-none absolute -left-40 top-[-100px] h-[500px] w-[500px] rounded-full bg-blue-400/10 blur-[140px]" />
