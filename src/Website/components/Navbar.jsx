@@ -109,8 +109,8 @@ export default function Navbar() {
           </Link>
 
           {/* Start Free Trial */}
-          <Link
-            href="/register"
+          <a
+            href="#pricing"
             className="
               group
               flex
@@ -147,7 +147,7 @@ export default function Navbar() {
               size={14}
               className="transition-transform duration-300 group-hover:translate-x-1 lg:h-[18px] lg:w-[18px]"
             />
-          </Link>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
@@ -193,13 +193,13 @@ export default function Navbar() {
             </Link>
 
             {/* Mobile Start Free Trial */}
-            <Link
-              href="/register"
+            <a
+              href="#pricing"
               onClick={() => setMobileMenu(false)}
               className="mt-3 rounded-lg bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] py-3 text-center font-semibold text-white transition-all hover:shadow-lg"
             >
               Start Free Trial
-            </Link>
+            </a>
           </div>
         </div>
       )}

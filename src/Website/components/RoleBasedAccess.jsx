@@ -329,7 +329,7 @@ export default function RoleBasedAccess() {
                   className={`
                     relative
                     whitespace-nowrap
-                    rounded-[20px]
+                    rounded-full
                     px-3
                     py-1.5
                     text-[14px]

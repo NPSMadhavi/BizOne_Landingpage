@@ -187,17 +187,17 @@ export default function Hero() {
         <div className="mt-10 flex w-full flex-col justify-center gap-4 sm:w-auto sm:flex-row">
 
           {/* Start Free Trial */}
-          <Link
-            href="/register"
-            className="group flex items-center justify-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-5 py-2 text-base font-semibold text-[#FCFCFC] transition duration-300 hover:bg-[#1D4ED8] hover:shadow-lg md:px-8 md:py-3"
-          >
-            Start Free Trial
+         <a
+  href="#pricing"
+  className="group flex items-center justify-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-5 py-2 text-base font-semibold text-[#FCFCFC] transition duration-300 hover:bg-[#1D4ED8] hover:shadow-lg md:px-8 md:py-3"
+>
+  Start Free Trial
 
-            <ArrowRight
-              size={18}
-              className="transition group-hover:translate-x-1"
-            />
-          </Link>
+  <ArrowRight
+    size={18}
+    className="transition group-hover:translate-x-1"
+  />
+</a>
 
          
         </div>

@@ -40,13 +40,13 @@ export default function CTASection() {
           {/* Buttons */}
           <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row">
 
-            <Link
-              href="/register"
-              className="flex items-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-6 py-3 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105"
+            <a
+              href="#pricing"
+              className="mb-2 flex items-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-6 py-3 font-medium text-white  transition-all duration-300 hover:scale-105"
             >
               Start Free Trial
               <ArrowRight size={18} />
-            </Link>
+            </a>
 
           
 
@@ -57,7 +57,7 @@ export default function CTASection() {
       </div>
 
       {/* Footer Part */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-5 pt-12 lg:pt-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-5 pt-12 lg:pt-13">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr]">
           {/* Brand */}
           <div>
