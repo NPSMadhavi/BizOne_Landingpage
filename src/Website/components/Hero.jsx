@@ -184,12 +184,12 @@ export default function Hero() {
         </p>
 
         {/* Buttons */}
-        <div className="mt-10 flex w-full flex-col justify-center gap-4 sm:w-auto sm:flex-row">
+        <div className="mt-4 md:mt-6 lg:mt-8   flex w-[47%] md:w-auto flex-col justify-center gap-4 sm:w-auto sm:flex-row">
 
           {/* Start Free Trial */}
          <a
   href="#pricing"
-  className="group flex items-center justify-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-5 py-2 text-base font-semibold text-[#FCFCFC] transition duration-300 hover:bg-[#1D4ED8] hover:shadow-lg md:px-8 md:py-3"
+  className="group flex items-center justify-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-4 py-1.5 text-[12px] md:text-[15px] lg:text-[16px] font-semibold text-[#FCFCFC] transition duration-300 hover:bg-[#1D4ED8] hover:shadow-xl md:px-7 md:py-2.5"
 >
   Start Free Trial
 
@@ -203,7 +203,7 @@ export default function Hero() {
         </div>
 
         {/* Small Text */}
-        <p className="mt-4 text-[12px] text-[#596475] md:mt-5 md:text-[13px] lg:text-[14px]">
+        <p className="mt-3 text-[12px] items-center justify-center text-[#596475] md:mt-4 md:text-[13px] lg:text-[14px]">
           14-day free trial · No credit card required · Cancel anytime
         </p>
 

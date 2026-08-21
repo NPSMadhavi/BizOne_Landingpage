@@ -42,7 +42,7 @@ export default function CTASection() {
 
             <a
               href="#pricing"
-              className="mb-2 flex items-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-6 py-3 font-medium text-white  transition-all duration-300 hover:scale-105"
+              className="mb-2 flex items-center gap-2 rounded-[16px] bg-gradient-to-r from-[#002E99] via-[#0072F8] to-[#009FFF] px-6 py-2.5 font-medium text-white  transition-all duration-300 hover:scale-105"
             >
               Start Free Trial
               <ArrowRight size={18} />
