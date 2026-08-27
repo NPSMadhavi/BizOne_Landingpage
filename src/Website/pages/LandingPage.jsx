@@ -1,6 +1,7 @@
-import CTASection from "../components/cta&footer";
+import Contact from "../components/Contact";
 import FAQSection from "../components/FAQ";
 import Features from "../components/Features";
+import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import PricingSection from "../components/PricingSection";
 import RoleBasedAccess from "../components/RoleBasedAccess";
@@ -15,7 +16,8 @@ export default function LandingPage() {
       <WhoCanUse />
       <PricingSection />
       <FAQSection />
-      <CTASection />
+      <Contact />
+      <Footer />
     </>
   );
 }

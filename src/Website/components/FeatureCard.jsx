@@ -25,7 +25,6 @@ export default function FeatureCard({
         sm:p-5
         lg:rounded-[20px]
         lg:p-5
-        
       "
     >
       <div className="flex flex-col">
@@ -52,6 +51,15 @@ export default function FeatureCard({
               duration-500
               group-hover:scale-[1.02]
             "
+            style={{
+              imageRendering: "-webkit-optimize-contrast",
+              willChange: "transform",
+              transform: "translate3d(0,0,0)",
+              WebkitFontSmoothing: "antialiased",
+              backfaceVisibility: "hidden",
+            }}
+            decoding="async"
+            loading="eager"
           />
         </div>
 

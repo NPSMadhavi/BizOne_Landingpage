@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShieldCheck,
@@ -224,6 +224,176 @@ const rolesData = [
 export default function RoleBasedAccess() {
   const [activeRole, setActiveRole] = useState(rolesData[0]);
 
+  /*
+   * =========================================================
+   * SCROLL-TO-ADVANCE: scrolling over this section moves to the
+   * next/previous role tab, one at a time.
+   *
+   * Approach: instead of a fixed-duration lock (which has to
+   * guess how long trackpad momentum will last), we accumulate
+   * the deltaY of every wheel event in a gesture and only act
+   * once the gesture has actually gone idle (no events for
+   * WHEEL_SETTLE_DELAY ms). This guarantees exactly one role
+   * change per physical scroll gesture, no matter how long the
+   * momentum tail is.
+   * =========================================================
+   */
+
+  const roleSectionRef = useRef(null);
+
+  /*
+   * Keep current role index inside a ref so the wheel
+   * listener doesn't need to be recreated on every change.
+   */
+  const activeRoleIndexRef = useRef(0);
+
+  /*
+   * Accumulates deltaY for the wheel gesture currently in progress.
+   * We don't act on individual events — we wait for the whole
+   * gesture (including trackpad momentum) to settle, then act
+   * once based on the net direction.
+   */
+  const wheelAccumulatorRef = useRef(0);
+
+  /*
+   * Timer that fires once no wheel events have arrived for
+   * WHEEL_SETTLE_DELAY ms — i.e. the gesture (and any momentum
+   * tail) has actually finished. Every new wheel event pushes
+   * this deadline further out instead of relying on a guessed
+   * fixed duration.
+   */
+  const wheelSettleTimerRef = useRef(null);
+  const WHEEL_SETTLE_DELAY = 100;
+
+  const showNextRole = () => {
+    const currentIndex = activeRoleIndexRef.current;
+
+    // Do not loop back to the first role after the last role.
+    if (currentIndex >= rolesData.length - 1) {
+      return;
+    }
+
+    const nextIndex = currentIndex + 1;
+
+    activeRoleIndexRef.current = nextIndex;
+    setActiveRole(rolesData[nextIndex]);
+  };
+
+  const showPreviousRole = () => {
+    const currentIndex = activeRoleIndexRef.current;
+
+    if (currentIndex <= 0) {
+      return;
+    }
+
+    const previousIndex = currentIndex - 1;
+
+    activeRoleIndexRef.current = previousIndex;
+    setActiveRole(rolesData[previousIndex]);
+  };
+
+  useEffect(() => {
+    const sectionElement = roleSectionRef.current;
+
+    if (!sectionElement) {
+      return;
+    }
+
+    const handleWheel = (event) => {
+      const currentIndex = activeRoleIndexRef.current;
+
+      /*
+       * At the FIRST role, scrolling UP should behave like normal
+       * page scrolling. Do not trap the user inside this section.
+       */
+      if (event.deltaY < 0 && currentIndex <= 0) {
+        wheelAccumulatorRef.current = 0;
+
+        if (wheelSettleTimerRef.current) {
+          clearTimeout(wheelSettleTimerRef.current);
+          wheelSettleTimerRef.current = null;
+        }
+
+        return;
+      }
+
+      /*
+       * At the LAST role, scrolling DOWN should behave like normal
+       * page scrolling and continue to the next section.
+       */
+      if (
+        event.deltaY > 0 &&
+        currentIndex >= rolesData.length - 1
+      ) {
+        wheelAccumulatorRef.current = 0;
+
+        if (wheelSettleTimerRef.current) {
+          clearTimeout(wheelSettleTimerRef.current);
+          wheelSettleTimerRef.current = null;
+        }
+
+        return;
+      }
+
+      /*
+       * While moving between roles, keep the page fixed and handle
+       * the wheel gesture ourselves.
+       */
+      event.preventDefault();
+      event.stopPropagation();
+
+      /*
+       * Ignore tiny trackpad movements.
+       */
+      if (Math.abs(event.deltaY) < 5) {
+        return;
+      }
+
+      /*
+       * Accumulate the complete wheel gesture so one physical
+       * scroll changes exactly one role.
+       */
+      wheelAccumulatorRef.current += event.deltaY;
+
+      /*
+       * Wait until the wheel gesture settles before changing role.
+       * This prevents trackpad momentum from jumping through roles.
+       */
+      if (wheelSettleTimerRef.current) {
+        clearTimeout(wheelSettleTimerRef.current);
+      }
+
+      wheelSettleTimerRef.current = setTimeout(() => {
+        const totalDelta = wheelAccumulatorRef.current;
+
+        wheelAccumulatorRef.current = 0;
+        wheelSettleTimerRef.current = null;
+
+        if (totalDelta > 0) {
+          showNextRole();
+        } else if (totalDelta < 0) {
+          showPreviousRole();
+        }
+      }, WHEEL_SETTLE_DELAY);
+    };
+
+    /*
+     * passive:false is REQUIRED so preventDefault() can
+     * stop the browser/page scroll.
+     */
+    sectionElement.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+
+    return () => {
+      sectionElement.removeEventListener("wheel", handleWheel);
+
+      if (wheelSettleTimerRef.current) {
+        clearTimeout(wheelSettleTimerRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       {/* Only for 150% browser zoom */}
@@ -239,7 +409,8 @@ export default function RoleBasedAccess() {
       <section
         className="
           bg-[#F9FAFB]
-          pt-16
+          pt-10
+          md:pt-16
           pb-16
           md:pb-20
           lg:pb-33
@@ -293,625 +464,114 @@ export default function RoleBasedAccess() {
             stays hidden and inaccessible.
           </p>
 
-          {/* Role Tabs */}
+          {/* =====================================================
+              SCROLL-TO-ADVANCE ZONE
+              Tabs + role cards live inside this wrapper so wheel
+              scrolling here moves between roles.
+              ===================================================== */}
+
           <div
-            className="
-              relative
-              z-20
-              mt-13
-              flex
-              w-full
-              justify-start
-              overflow-x-auto
-              [scrollbar-width:none]
-              [&::-webkit-scrollbar]:hidden
-              md:justify-center
-            "
+            ref={roleSectionRef}
+            style={{
+              overscrollBehavior: "none",
+              touchAction: "none",
+            }}
           >
+            {/* Role Tabs */}
             <div
               className="
-                inline-flex
-                shrink-0
-                items-center
-                gap-2
-                rounded-full
-                border
-                border-gray-200
-                bg-[#FFFFFF]
-                px-3
-                py-1.5
+                relative
+                z-20
+                mt-13
+                flex
+                w-full
+                justify-start
+                overflow-x-auto
+                [scrollbar-width:none]
+                [&::-webkit-scrollbar]:hidden
+                md:justify-center
               "
             >
-              {rolesData.map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setActiveRole(role)}
-                  className={`
-                    relative
-                    whitespace-nowrap
-                    rounded-full
-                    px-3
-                    py-1.5
-                    text-[14px]
-                    font-semibold
-                    transition-all
-                    duration-300
-                    md:px-4
-                    md:py-2
-                    md:text-[15px]
-                    lg:px-6
-                    lg:py-2.5
-                    lg:text-[18px]
-                    ${
-                      activeRole.id === role.id
-                        ? "bg-[#0065E6] text-white"
-                        : "bg-transparent text-[#475467] hover:bg-gray-100 hover:text-gray-900"
-                    }
-                  `}
-                >
-                  {role.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* =====================================================
-              MOBILE + MD
-              ===================================================== */}
-
-          <div className="mt-12 lg:hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeRole.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                exit="exit"
-                className="relative mx-auto max-w-full"
+              <div
+                className="
+                  inline-flex
+                  shrink-0
+                  items-center
+                  gap-2
+                  rounded-full
+                  border
+                  border-gray-200
+                  bg-[#FFFFFF]
+                  px-3
+                  py-1.5
+                "
               >
-                <div
-                  className="
-                    grid
-                    w-full
-                    grid-cols-1
-                    gap-6
-                    md:grid-cols-2
-                  "
-                >
-                  {/* Card 1 + Card 2 */}
-                  {activeRole.cards.slice(0, 2).map((card, index) => {
-                    const Icon = card.icon;
-
-                    return (
-                      <motion.div
-                        key={index}
-                        variants={{
-                          hidden: {
-                            opacity: 0,
-                            scale: 0.3,
-                            y: 30,
-                          },
-                          visible: {
-                            opacity: 1,
-                            scale: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.5,
-                              delay: 0.5 + index * 0.15,
-                              ease: "easeOut",
-                            },
-                          },
-                          exit: {
-                            opacity: 0,
-                          },
-                        }}
-                        className="
-                          relative
-                          z-0
-                          flex
-                          min-h-[220px]
-                          w-full
-                          flex-col
-                          rounded-[24px]
-                          border
-                          border-gray-200
-                          bg-white
-                          p-5
-                          shadow-sm
-                          transition-shadow
-                          duration-300
-                          hover:shadow-2xl
-                          md:min-h-[220px]
-                          md:p-6
-                        "
-                      >
-                        <div
-                          className="
-                            mb-4
-                            flex
-                            h-12
-                            w-12
-                            items-center
-                            justify-center
-                            rounded-xl
-                            bg-[#EBF1FF]
-                            text-[#0A4CCF]
-                          "
-                        >
-                          <Icon size={23} />
-                        </div>
-
-                        <h3
-                          className="
-                            mb-2
-                            text-[18px]
-                            font-semibold
-                            text-[#071123]
-                            md:text-[20px]
-                          "
-                        >
-                          {card.title}
-                        </h3>
-
-                        <p
-                          className="
-                            text-[16px]
-                            text-[#6A7282]
-                            md:text-[17px]
-                          "
-                        >
-                          {card.description}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
-
-                  {/* Image */}
-                  <motion.div
-                    variants={{
-                      hidden: {
-                        opacity: 0,
-                        y: 40,
-                        scale: 0.85,
-                      },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        transition: {
-                          duration: 0.5,
-                          delay: 0,
-                          ease: "easeOut",
-                        },
-                      },
-                      exit: {
-                        opacity: 0,
-                      },
+                {rolesData.map((role, roleIndex) => (
+                  <button
+                    key={role.id}
+                    onClick={() => {
+                      activeRoleIndexRef.current = roleIndex;
+                      setActiveRole(role);
                     }}
-                    className="
-                      col-span-1
+                    className={`
                       relative
-                      z-20
-                      flex
-                      min-w-0
-                      justify-center
-                      md:col-span-2
-                    "
+                      whitespace-nowrap
+                      rounded-full
+                      px-3
+                      py-1.5
+                      text-[14px]
+                      font-semibold
+                      transition-all
+                      duration-300
+                      md:px-4
+                      md:py-2
+                      md:text-[15px]
+                      lg:px-6
+                      lg:py-2.5
+                      lg:text-[18px]
+                      ${
+                        activeRole.id === role.id
+                          ? "bg-[#0065E6] text-white"
+                          : "bg-transparent text-[#475467] hover:bg-gray-100 hover:text-gray-900"
+                      }
+                    `}
                   >
-                    <img
-                      src={activeRole.image}
-                      alt={activeRole.label}
-                      className="
-                        h-[250px]
-                        w-auto
-                        max-w-full
-                        object-contain
-                        object-bottom
-                        drop-shadow-xl
-                        md:h-[300px]
-                      "
-                    />
-                  </motion.div>
+                    {role.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                  {/* Card 3 + Card 4 */}
-                  {activeRole.cards.slice(2, 4).map((card, index) => {
-                    const Icon = card.icon;
+            {/* =====================================================
+                MOBILE + MD
+                ===================================================== */}
 
-                    return (
-                      <motion.div
-                        key={index + 2}
-                        variants={{
-                          hidden: {
-                            opacity: 0,
-                            scale: 0.3,
-                            y: 30,
-                          },
-                          visible: {
-                            opacity: 1,
-                            scale: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.5,
-                              delay: 0.65 + index * 0.15,
-                              ease: "easeOut",
-                            },
-                          },
-                          exit: {
-                            opacity: 0,
-                          },
-                        }}
-                        className="
-                          relative
-                          z-0
-                          flex
-                          min-h-[220px]
-                          w-full
-                          flex-col
-                          rounded-[24px]
-                          border
-                          border-gray-200
-                          bg-white
-                          p-5
-                          shadow-sm
-                          transition-shadow
-                          duration-300
-                          hover:shadow-2xl
-                          md:min-h-[220px]
-                          md:p-6
-                        "
-                      >
-                        <div
-                          className="
-                            mb-4
-                            flex
-                            h-12
-                            w-12
-                            items-center
-                            justify-center
-                            rounded-xl
-                            bg-[#EBF1FF]
-                            text-[#0A4CCF]
-                          "
-                        >
-                          <Icon size={23} />
-                        </div>
-
-                        <h3
-                          className="
-                            mb-2
-                            text-[18px]
-                            font-semibold
-                            text-[#071123]
-                            md:text-[20px]
-                          "
-                        >
-                          {card.title}
-                        </h3>
-
-                        <p
-                          className="
-                            text-[16px]
-                            text-[#6A7282]
-                            md:text-[17px]
-                          "
-                        >
-                          {card.description}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* =====================================================
-              LG / DESKTOP
-              ===================================================== */}
-
-          <div className="mt-12 hidden lg:block">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeRole.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                exit="exit"
-                className="relative mx-auto max-w-full"
-              >
-                {/* Top Cards */}
-                <div
-                  className="
-                    relative
-                    z-0
-                    flex
-                    w-full
-                    flex-col
-                    items-center
-                    justify-center
-                    gap-6
-                    md:flex-row
-                    md:gap-6
-                    lg:gap-20
-                  "
+            <div className="mt-12 lg:hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeRole.id}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  exit="exit"
+                  className="relative mx-auto max-w-full"
                 >
-                  {activeRole.cards.slice(0, 2).map((card, index) => {
-                    const Icon = card.icon;
-
-                    return (
-                      <motion.div
-                        key={index}
-                        variants={{
-                          hidden: {
-                            opacity: 0,
-                            scale: 0.3,
-                            y: 30,
-                          },
-                          visible: {
-                            opacity: 1,
-                            scale: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.5,
-                              delay: 0.5 + index * 0.15,
-                              ease: "easeOut",
-                            },
-                          },
-                          exit: {
-                            opacity: 0,
-                            transition: {
-                              duration: 0.1,
-                            },
-                          },
-                        }}
-                        className="
-                          role-card-zoom
-                          relative
-                          z-0
-                          flex
-                          h-auto
-                          w-full
-                          shrink-0
-                          flex-col
-                          rounded-[24px]
-                          border
-                          border-gray-200
-                          bg-white
-                          p-5
-                          shadow-sm
-                          transition-shadow
-                          duration-300
-                          hover:shadow-2xl
-                          md:w-[300px]
-                          md:h-auto
-                          lg:w-[490px]
-                          lg:h-[240px]
-                          lg:p-6
-                        "
-                      >
-                        <div
-                          className="
-                            mb-4
-                            flex
-                            h-12
-                            w-12
-                            items-center
-                            justify-center
-                            rounded-xl
-                            bg-[#EBF1FF]
-                            text-[#0A4CCF]
-                          "
-                        >
-                          <Icon size={23} />
-                        </div>
-
-                        <h3
-                          className="
-                            mb-2
-                            text-[18px]
-                            font-semibold
-                            text-[#071123]
-                            md:text-[20px]
-                            lg:text-[22px]
-                          "
-                        >
-                          {card.title}
-                        </h3>
-
-                        <p
-                          className="
-                            text-[16px]
-                            text-[#6A7282]
-                            md:text-[17px]
-                            lg:text-[18px]
-                          "
-                        >
-                          {card.description}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* Bottom Row */}
-                <div
-                  className="
-                    relative
-                    z-10
-                    mt-8
-                    flex
-                    w-full
-                    flex-col
-                    items-center
-                    justify-center
-                    gap-6
-                    md:mt-12
-                    md:flex-row
-                    md:items-end
-                    lg:gap-10
-                  "
-                >
-                  {/* Card 3 */}
-                  {activeRole.cards[2] &&
-                    (() => {
-                      const card = activeRole.cards[2];
-                      const Icon = card.icon;
-
-                      return (
-                        <motion.div
-                          variants={{
-                            hidden: {
-                              opacity: 0,
-                              scale: 0.3,
-                              y: 30,
-                            },
-                            visible: {
-                              opacity: 1,
-                              scale: 1,
-                              y: 0,
-                              transition: {
-                                duration: 0.5,
-                                delay: 0.65,
-                                ease: "easeOut",
-                              },
-                            },
-                            exit: {
-                              opacity: 0,
-                              transition: {
-                                duration: 0.1,
-                              },
-                            },
-                          }}
-                          className="
-                            role-card-zoom
-                            relative
-                            z-0
-                            flex
-                            h-auto
-                            w-full
-                            shrink-0
-                            flex-col
-                            rounded-[24px]
-                            border
-                            border-gray-200
-                            bg-white
-                            p-5
-                            shadow-sm
-                            transition-shadow
-                            duration-300
-                            hover:shadow-2xl
-                            md:w-[300px]
-                            md:h-auto
-                            lg:w-[490px]
-                            lg:h-[240px]
-                            lg:p-6
-                          "
-                        >
-                          <div
-                            className="
-                              mb-4
-                              flex
-                              h-12
-                              w-12
-                              items-center
-                              justify-center
-                              rounded-xl
-                              bg-[#EBF1FF]
-                              text-[#0A4CCF]
-                            "
-                          >
-                            <Icon size={23} />
-                          </div>
-
-                          <h3
-                            className="
-                              mb-2
-                              text-[18px]
-                              font-semibold
-                              text-[#071123]
-                              md:text-[20px]
-                              lg:text-[22px]
-                            "
-                          >
-                            {card.title}
-                          </h3>
-
-                          <p
-                            className="
-                              text-[16px]
-                              text-[#6A7282]
-                              md:text-[17px]
-                              lg:text-[18px]
-                            "
-                          >
-                            {card.description}
-                          </p>
-                        </motion.div>
-                      );
-                    })()}
-
-                  {/* CENTER IMAGE */}
-                  <motion.div
-                    variants={{
-                      hidden: {
-                        opacity: 0,
-                        y: 40,
-                        scale: 0.85,
-                      },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        transition: {
-                          duration: 0.5,
-                          delay: 0,
-                          ease: "easeOut",
-                        },
-                      },
-                      exit: {
-                        opacity: 0,
-                        transition: {
-                          duration: 0.2,
-                        },
-                      },
-                    }}
+                  <div
                     className="
-                      pointer-events-none
-                      z-20
-                      flex
-                      min-w-0
-                      shrink
-                      justify-center
-                      -mt-8
-                      -mb-8
-                      md:-mt-10
-                      md:-mb-12
-                      lg:-mt-10
-                      lg:-mb-24
+                      grid
+                      w-full
+                      grid-cols-1
+                      gap-6
+                      md:grid-cols-2
                     "
                   >
-                    <img
-                      src={activeRole.image}
-                      alt={activeRole.label}
-                      className="
-                        h-[200px]
-                        w-auto
-                        object-contain
-                        object-bottom
-                        drop-shadow-xl
-                        lg:h-[420px]
-                      "
-                    />
-                  </motion.div>
-
-                  {/* Card 4 */}
-                  {activeRole.cards[3] &&
-                    (() => {
-                      const card = activeRole.cards[3];
+                    {/* Card 1 + Card 2 */}
+                    {activeRole.cards.slice(0, 2).map((card, index) => {
                       const Icon = card.icon;
 
                       return (
                         <motion.div
+                          key={index}
                           variants={{
                             hidden: {
                               opacity: 0,
@@ -923,8 +583,264 @@ export default function RoleBasedAccess() {
                               scale: 1,
                               y: 0,
                               transition: {
-                                duration: 0.5,
-                                delay: 0.8,
+                                duration: 0.65,
+                                delay: 0.5 + index * 0.15,
+                                ease: "easeOut",
+                              },
+                            },
+                            exit: {
+                              opacity: 0,
+                            },
+                          }}
+                          className="
+                            relative
+                            z-0
+                            flex
+                            min-h-[220px]
+                            w-full
+                            flex-col
+                            rounded-[24px]
+                            border
+                            border-gray-200
+                            bg-white
+                            p-5
+                            shadow-sm
+                            transition-shadow
+                            duration-300
+                            hover:shadow-2xl
+                            md:min-h-[220px]
+                            md:p-6
+                          "
+                        >
+                          <div
+                            className="
+                              mb-4
+                              flex
+                              h-12
+                              w-12
+                              items-center
+                              justify-center
+                              rounded-xl
+                              bg-[#EBF1FF]
+                              text-[#0A4CCF]
+                            "
+                          >
+                            <Icon size={23} />
+                          </div>
+
+                          <h3
+                            className="
+                              mb-2
+                              text-[18px]
+                              font-semibold
+                              text-[#071123]
+                              md:text-[20px]
+                            "
+                          >
+                            {card.title}
+                          </h3>
+
+                          <p
+                            className="
+                              text-[16px]
+                              text-[#6A7282]
+                              md:text-[17px]
+                            "
+                          >
+                            {card.description}
+                          </p>
+                        </motion.div>
+                      );
+                    })}
+
+                    {/* Image */}
+                    <motion.div
+                      variants={{
+                        hidden: {
+                          opacity: 0,
+                          y: 40,
+                          scale: 0.85,
+                        },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            duration: 0.65,
+                            delay: 0,
+                            ease: "easeOut",
+                          },
+                        },
+                        exit: {
+                          opacity: 0,
+                        },
+                      }}
+                      className="
+                        col-span-1
+                        relative
+                        z-20
+                        flex
+                        min-w-0
+                        justify-center
+                        md:col-span-2
+                      "
+                    >
+                      <img
+                        src={activeRole.image}
+                        alt={activeRole.label}
+                        className="
+                          h-[250px]
+                          w-auto
+                          max-w-full
+                          object-contain
+                          object-bottom
+                          drop-shadow-xl
+                          md:h-[300px]
+                        "
+                      />
+                    </motion.div>
+
+                    {/* Card 3 + Card 4 */}
+                    {activeRole.cards.slice(2, 4).map((card, index) => {
+                      const Icon = card.icon;
+
+                      return (
+                        <motion.div
+                          key={index + 2}
+                          variants={{
+                            hidden: {
+                              opacity: 0,
+                              scale: 0.3,
+                              y: 30,
+                            },
+                            visible: {
+                              opacity: 1,
+                              scale: 1,
+                              y: 0,
+                              transition: {
+                                duration: 0.65,
+                                delay: 0.65 + index * 0.15,
+                                ease: "easeOut",
+                              },
+                            },
+                            exit: {
+                              opacity: 0,
+                            },
+                          }}
+                          className="
+                            relative
+                            z-0
+                            flex
+                            min-h-[220px]
+                            w-full
+                            flex-col
+                            rounded-[24px]
+                            border
+                            border-gray-200
+                            bg-white
+                            p-5
+                            shadow-sm
+                            transition-shadow
+                            duration-300
+                            hover:shadow-2xl
+                            md:min-h-[220px]
+                            md:p-6
+                          "
+                        >
+                          <div
+                            className="
+                              mb-4
+                              flex
+                              h-12
+                              w-12
+                              items-center
+                              justify-center
+                              rounded-xl
+                              bg-[#EBF1FF]
+                              text-[#0A4CCF]
+                            "
+                          >
+                            <Icon size={23} />
+                          </div>
+
+                          <h3
+                            className="
+                              mb-2
+                              text-[18px]
+                              font-semibold
+                              text-[#071123]
+                              md:text-[20px]
+                            "
+                          >
+                            {card.title}
+                          </h3>
+
+                          <p
+                            className="
+                              text-[16px]
+                              text-[#6A7282]
+                              md:text-[17px]
+                            "
+                          >
+                            {card.description}
+                          </p>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* =====================================================
+                LG / DESKTOP
+                ===================================================== */}
+
+            <div className="mt-12 hidden lg:block">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeRole.id}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  exit="exit"
+                  className="relative mx-auto max-w-full"
+                >
+                  {/* Top Cards */}
+                  <div
+                    className="
+                      relative
+                      z-0
+                      flex
+                      w-full
+                      flex-col
+                      items-center
+                      justify-center
+                      gap-6
+                      md:flex-row
+                      md:gap-6
+                      lg:gap-20
+                    "
+                  >
+                    {activeRole.cards.slice(0, 2).map((card, index) => {
+                      const Icon = card.icon;
+
+                      return (
+                        <motion.div
+                          key={index}
+                          variants={{
+                            hidden: {
+                              opacity: 0,
+                              scale: 0.3,
+                              y: 30,
+                            },
+                            visible: {
+                              opacity: 1,
+                              scale: 1,
+                              y: 0,
+                              transition: {
+                                duration: 0.65,
+                                delay: 0.5 + index * 0.15,
                                 ease: "easeOut",
                               },
                             },
@@ -1001,10 +917,282 @@ export default function RoleBasedAccess() {
                           </p>
                         </motion.div>
                       );
-                    })()}
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                    })}
+                  </div>
+
+                  {/* Bottom Row */}
+                  <div
+                    className="
+                      relative
+                      z-10
+                      mt-8
+                      flex
+                      w-full
+                      flex-col
+                      items-center
+                      justify-center
+                      gap-6
+                      md:mt-12
+                      md:flex-row
+                      md:items-end
+                      lg:gap-10
+                    "
+                  >
+                    {/* Card 3 */}
+                    {activeRole.cards[2] &&
+                      (() => {
+                        const card = activeRole.cards[2];
+                        const Icon = card.icon;
+
+                        return (
+                          <motion.div
+                            variants={{
+                              hidden: {
+                                opacity: 0,
+                                scale: 0.3,
+                                y: 30,
+                              },
+                              visible: {
+                                opacity: 1,
+                                scale: 1,
+                                y: 0,
+                                transition: {
+                                  duration: 0.5,
+                                  delay: 0.65,
+                                  ease: "easeOut",
+                                },
+                              },
+                              exit: {
+                                opacity: 0,
+                                transition: {
+                                  duration: 0.1,
+                                },
+                              },
+                            }}
+                            className="
+                              role-card-zoom
+                              relative
+                              z-0
+                              flex
+                              h-auto
+                              w-full
+                              shrink-0
+                              flex-col
+                              rounded-[24px]
+                              border
+                              border-gray-200
+                              bg-white
+                              p-5
+                              shadow-sm
+                              transition-shadow
+                              duration-300
+                              hover:shadow-2xl
+                              md:w-[300px]
+                              md:h-auto
+                              lg:w-[490px]
+                              lg:h-[240px]
+                              lg:p-6
+                            "
+                          >
+                            <div
+                              className="
+                                mb-4
+                                flex
+                                h-12
+                                w-12
+                                items-center
+                                justify-center
+                                rounded-xl
+                                bg-[#EBF1FF]
+                                text-[#0A4CCF]
+                              "
+                            >
+                              <Icon size={23} />
+                            </div>
+
+                            <h3
+                              className="
+                                mb-2
+                                text-[18px]
+                                font-semibold
+                                text-[#071123]
+                                md:text-[20px]
+                                lg:text-[22px]
+                              "
+                            >
+                              {card.title}
+                            </h3>
+
+                            <p
+                              className="
+                                text-[16px]
+                                text-[#6A7282]
+                                md:text-[17px]
+                                lg:text-[18px]
+                              "
+                            >
+                              {card.description}
+                            </p>
+                          </motion.div>
+                        );
+                      })()}
+
+                    {/* CENTER IMAGE */}
+                    <motion.div
+                      variants={{
+                        hidden: {
+                          opacity: 0,
+                          y: 40,
+                          scale: 0.85,
+                        },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            duration: 0.65,
+                            delay: 0,
+                            ease: "easeOut",
+                          },
+                        },
+                        exit: {
+                          opacity: 0,
+                          transition: {
+                            duration: 0.2,
+                          },
+                        },
+                      }}
+                      className="
+                        pointer-events-none
+                        z-20
+                        flex
+                        min-w-0
+                        shrink
+                        justify-center
+                        -mt-8
+                        -mb-8
+                        md:-mt-10
+                        md:-mb-12
+                        lg:-mt-10
+                        lg:-mb-24
+                      "
+                    >
+                      <img
+                        src={activeRole.image}
+                        alt={activeRole.label}
+                        className="
+                          h-[200px]
+                          w-auto
+                          object-contain
+                          object-bottom
+                          drop-shadow-xl
+                          lg:h-[420px]
+                        "
+                      />
+                    </motion.div>
+
+                    {/* Card 4 */}
+                    {activeRole.cards[3] &&
+                      (() => {
+                        const card = activeRole.cards[3];
+                        const Icon = card.icon;
+
+                        return (
+                          <motion.div
+                            variants={{
+                              hidden: {
+                                opacity: 0,
+                                scale: 0.3,
+                                y: 30,
+                              },
+                              visible: {
+                                opacity: 1,
+                                scale: 1,
+                                y: 0,
+                                transition: {
+                                  duration: 0.5,
+                                  delay: 0.8,
+                                  ease: "easeOut",
+                                },
+                              },
+                              exit: {
+                                opacity: 0,
+                                transition: {
+                                  duration: 0.1,
+                                },
+                              },
+                            }}
+                            className="
+                              role-card-zoom
+                              relative
+                              z-0
+                              flex
+                              h-auto
+                              w-full
+                              shrink-0
+                              flex-col
+                              rounded-[24px]
+                              border
+                              border-gray-200
+                              bg-white
+                              p-5
+                              shadow-sm
+                              transition-shadow
+                              duration-300
+                              hover:shadow-2xl
+                              md:w-[300px]
+                              md:h-auto
+                              lg:w-[490px]
+                              lg:h-[240px]
+                              lg:p-6
+                            "
+                          >
+                            <div
+                              className="
+                                mb-4
+                                flex
+                                h-12
+                                w-12
+                                items-center
+                                justify-center
+                                rounded-xl
+                                bg-[#EBF1FF]
+                                text-[#0A4CCF]
+                              "
+                            >
+                              <Icon size={23} />
+                            </div>
+
+                            <h3
+                              className="
+                                mb-2
+                                text-[18px]
+                                font-semibold
+                                text-[#071123]
+                                md:text-[20px]
+                                lg:text-[22px]
+                              "
+                            >
+                              {card.title}
+                            </h3>
+
+                            <p
+                              className="
+                                text-[16px]
+                                text-[#6A7282]
+                                md:text-[17px]
+                                lg:text-[18px]
+                              "
+                            >
+                              {card.description}
+                            </p>
+                          </motion.div>
+                        );
+                      })()}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </section>

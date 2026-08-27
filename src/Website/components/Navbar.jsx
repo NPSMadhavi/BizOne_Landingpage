@@ -79,8 +79,8 @@ export default function Navbar() {
         {/* Desktop Buttons - Right */}
         <div className="ml-auto hidden items-center gap-2 md:flex lg:gap-3">
           {/* Login */}
-          <Link
-            href="/login"
+          <a
+            href="https://sg.biz1.in/"
             className="
               whitespace-nowrap
               rounded-[12px]
@@ -106,7 +106,7 @@ export default function Navbar() {
             "
           >
             Login
-          </Link>
+          </a>
 
           {/* Start Free Trial */}
           <a
@@ -184,13 +184,13 @@ export default function Navbar() {
             ))}
 
             {/* Mobile Login */}
-            <Link
-              href="/login"
+            <a
+              href="https://sg.biz1.in/"
               onClick={() => setMobileMenu(false)}
               className="mt-3 rounded-lg border border-gray-200 py-3 text-center font-medium text-[#111827] transition-all hover:border-blue-500 hover:text-blue-600"
             >
               Login
-            </Link>
+            </a>
 
             {/* Mobile Start Free Trial */}
             <a
