@@ -90,12 +90,14 @@ export default function FAQSection() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
+                data-entry
                 className="border-b border-[#EAECF0]"
               >
 
                 <button
                   onClick={() => toggleFAQ(index)}
                   className="
+                    faq-question
                     flex
                     w-full
                     items-center

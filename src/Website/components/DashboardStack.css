@@ -1,0 +1,131 @@
+.dashboard-carousel {
+  width: 100%;
+  overflow: hidden;
+
+  /* Reduced top and bottom space */
+  padding: 90px 0 40px;
+}
+
+.dashboard-carousel__stage {
+  position: relative;
+  width: 100%;
+}
+
+.dashboard-carousel__card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  background: transparent;
+  box-shadow: 0 8px 24px #14233d0a;
+}
+
+.dashboard-carousel__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  /* Prevent image bottom from getting cut */
+  object-fit: contain;
+  object-position: top center;
+
+  border-radius: 18px;
+  user-select: none;
+}
+
+.dashboard-carousel__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.dashboard-carousel__categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 5px;
+  border-radius: 28px;
+  background: #ffffff;
+}
+
+.dashboard-carousel__category {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 0;
+  border-radius: 22px;
+  padding: 10px 13px;
+  background: transparent;
+  color: #596475;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dashboard-carousel__category[aria-pressed="true"] {
+  background: #182132;
+  color: white;
+}
+
+@media (hover: hover) {
+ 
+  .dashboard-carousel__pause:hover { background: #d8e9ff; }
+  .dashboard-carousel__card:hover { box-shadow: 0 12px 30px #14233d20; }
+}
+
+.dashboard-carousel__category > span:last-child {
+  position: relative;
+}
+
+.dashboard-carousel__progress {
+  position: absolute;
+  inset: 0;
+  background: #ffffff26;
+  transform-origin: left;
+}
+
+.dashboard-carousel__pause {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #e7ebf1;
+  color: #182132;
+  cursor: pointer;
+}
+
+.dashboard-carousel button:focus-visible {
+  outline: 2px solid #0072f8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 639px) {
+  .dashboard-carousel {
+    /* Reduced mobile top/bottom space */
+    padding: 55px 0 12px;
+  }
+
+  .dashboard-carousel__card {
+    padding: 5px;
+    border-radius: 14px;
+  }
+
+  .dashboard-carousel__card img {
+    border-radius: 10px;
+    object-fit: contain;
+    object-position: top center;
+  }
+
+  .dashboard-carousel__category {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+}

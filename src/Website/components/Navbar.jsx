@@ -6,6 +6,7 @@ import BizOneLogo from "./BizOneLogo";
 export default function Navbar() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   // Detect page scroll
   useEffect(() => {
@@ -20,11 +21,32 @@ export default function Navbar() {
     };
   }, []);
 
+  // Detect active section using IntersectionObserver
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-30% 0px -70% 0px",
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   const navItems = [
-    { label: "Home", href: "#home" },
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", href: "#home", id: "home" },
+    { label: "Features", href: "#features", id: "features" },
+    { label: "Pricing", href: "#pricing", id: "pricing" },
+    { label: "Contact", href: "#contact", id: "contact" },
   ];
 
   return (
@@ -66,7 +88,7 @@ export default function Navbar() {
               key={item.label}
               href={item.href}
               className={`whitespace-nowrap font-medium transition-colors duration-300 text-[11px] md:text-[14px] lg:text-[16px] ${
-                item.label === "Home"
+                activeSection === item.id
                   ? "text-[#0072F8]"
                   : "text-[#071123] hover:text-[#0072F8]"
               }`}
@@ -177,7 +199,9 @@ export default function Navbar() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenu(false)}
-                className="py-3 text-[15px] font-medium text-gray-700 transition-colors hover:text-[#2563EB]"
+                className={`py-3 text-[15px] font-medium transition-colors hover:text-[#2563EB] ${
+                  activeSection === item.id ? "text-[#0072F8]" : "text-gray-700"
+                }`}
               >
                 {item.label}
               </a>

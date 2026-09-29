@@ -27,45 +27,45 @@ export default function Contact() {
 
             <div className="mt-10 flex flex-col gap-5">
               {/* Email Card */}
-              <div className="flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F9FAFB] p-5 shadow-sm">
+              <div data-entry className="flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F9FAFB] p-5 shadow-sm">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E6F0FF] text-[#0072F8]">
                   <Mail size={24} />
                 </div>
                 <div>
                   <h4 className="text-[14px] md:text-[15px] lg:text-[16px] font-medium text-[#596475]">General & Sales Inquiries</h4>
-                  <p className="mt-1 text-lg font-semibold text-[#071123]">hello@bizone.com</p>
+                  <p className="mt-1 text-lg font-semibold text-[#071123]">sayhello@biz1.sg</p>
                   <p className="mt-1 text-[14px] md:text-[15px] lg:text-[16px] text-[#596475]">Our response time is typically within 2 business hours.</p>
                 </div>
               </div>
 
               {/* Phone Card */}
-              <div className="flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F9FAFB] p-5 shadow-sm">
+              <div data-entry className="flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F9FAFB] p-5 shadow-sm">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E6F0FF] text-[#0072F8]">
                   <Phone size={24} />
                 </div>
                 <div>
                   <h4 className="text-[14px] md:text-[15px] lg:text-[16px] font-medium text-[#596475]">Talk to an ERP Specialist</h4>
-                  <p className="mt-1 text-lg font-semibold text-[#071123]">+1 (800) 555-0190</p>
+                  <p className="mt-1 text-lg font-semibold text-[#071123]">+65 6229 7788</p>
                   <p className="mt-1 text-[14px] md:text-[15px] lg:text-[16px] text-[#596475]">Available Mon-Fri, 9:00 AM - 6:00 PM EST.</p>
                 </div>
               </div>
 
               {/* Location Card */}
-              <div className="flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F9FAFB] p-5 shadow-sm">
+              <div data-entry className="flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F9FAFB] p-5 shadow-sm">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E6F0FF] text-[#0072F8]">
                   <MapPin size={24} />
                 </div>
                 <div>
                   <h4 className="text-[14px] md:text-[15px] lg:text-[16px] font-medium text-[#596475]">Corporate Headquarters</h4>
-                  <p className="mt-1 text-lg font-semibold text-[#071123]">One World Trade Center, Suite 85A</p>
-                  <p className="mt-1 text-[14px] md:text-[15px] lg:text-[16px] text-[#596475]">New York, NY 10007, United States</p>
+                  <p className="mt-1 text-lg font-semibold text-[#071123]">10 UBI Cresant, # 07-52</p>
+                  <p className="mt-1 text-[14px] md:text-[15px] lg:text-[16px] text-[#596475]">UBI TechPark Lobby C, Singapore 408564</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Right Column - Form */}
-          <div className="rounded-[24px] border border-[#E2E8F0] bg-[#FFFFFF] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] lg:p-10">
+          <div data-entry className="rounded-[24px] border border-[#E2E8F0] bg-[#FFFFFF] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] lg:p-10">
             <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">

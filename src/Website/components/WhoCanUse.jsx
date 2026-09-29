@@ -49,7 +49,7 @@ export default function WhoCanUse() {
   return (
     <section
       id="about"
-      className="bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] responsive-container"
+      className="bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[200px] responsive-container"
     >
       <div className="mx-auto max-w-7xl px-6">
 
@@ -72,13 +72,14 @@ export default function WhoCanUse() {
         </p>
 
         {/* Cards */}
-        <div className="mt-16 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 md:mt-14 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {businesses.map((business) => {
             const Icon = business.icon;
 
             return (
               <div
                 key={business.title}
+                data-entry
                 className="
                   group
                   flex

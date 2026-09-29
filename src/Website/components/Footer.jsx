@@ -17,7 +17,7 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr]">
 
           {/* Brand */}
-          <div>
+          <div data-entry>
             <BizOneLogo className="h-14 w-auto" />
 
             <p className="mt-6 max-w-sm text-[16px] md:text-[17px] lg:text-[18px] leading-7 text-[#6A7282]">
@@ -26,7 +26,7 @@ export default function Footer() {
           </div>
 
           {/* Product */}
-          <div>
+          <div data-entry>
             <h3 className="text-[18px] md:text-[19px] lg:text-[20px] font-semibold text-[#071123]">
               Product
             </h3>
@@ -58,11 +58,19 @@ export default function Footer() {
                   Pricing
                 </a>
               </li>
+              <li>
+                <a
+                  href="#contact"
+                  className="transition hover:text-[#0072F8]"
+                >
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Company */}
-          <div>
+          <div data-entry>
             <h3 className="text-[18px] md:text-[19px] lg:text-[20px] font-semibold text-[#071123]">
               Company
             </h3>

@@ -7,6 +7,7 @@ export default function FeatureCard({
 }) {
   return (
     <motion.div
+      data-entry
       whileHover={{ y: -4 }}
       transition={{ duration: 0.25 }}
       className="
@@ -38,29 +39,27 @@ export default function FeatureCard({
             bg-[#F3F5F7]
           "
         >
-          <img
-            src={image}
-            alt={title}
-            className="
-              block
-              aspect-[366/218]
-              w-full
-              object-cover
-              object-top
-              transition-transform
-              duration-500
-              group-hover:scale-[1.02]
-            "
-            style={{
-              imageRendering: "-webkit-optimize-contrast",
-              willChange: "transform",
-              transform: "translate3d(0,0,0)",
-              WebkitFontSmoothing: "antialiased",
-              backfaceVisibility: "hidden",
-            }}
-            decoding="async"
-            loading="eager"
-          />
+          <div className="product-screenshot">
+            <img
+              src={image}
+              alt={title}
+              draggable={false}
+              decoding="async"
+              className="
+                block
+                h-[160px]
+                md:h-[150px]
+                lg:h-[200px]
+              
+                w-full
+                object-contain
+                object-top
+                transition-transform
+                duration-500
+                group-hover:scale-[1.02]
+              "
+            />
+          </div>
         </div>
 
         {/* Title */}

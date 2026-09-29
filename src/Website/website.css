@@ -3,6 +3,23 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Clip horizontal overflow without creating a scroll container that traps sticky panels. */
+html:has(.bizone-landing), body:has(.bizone-landing) { overflow-x: clip; }
+.role-sticky-panel { position: sticky; top: 0; background: #F9FAFB; }
+
+.product-screenshot { display: block; width: 100%; height: 100%; }
+.product-screenshot img { image-rendering: auto; }
+
+.bizone-landing #contact .shadow-sm { transition: box-shadow 250ms ease, border-color 250ms ease; }
+@media (hover: hover) {
+  .bizone-landing #contact .shadow-sm:hover { border-color: #0072f8; box-shadow: 0 8px 24px #07112314; }
+  .bizone-landing .faq-question:hover { background: #eef4ff; }
+}
+.bizone-landing .faq-question { transition: background-color 200ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  html:has(.bizone-landing) { scroll-behavior: auto; }
+}
+
 .bizone-landing {
   background: #ffffff;
   color: #111827;
@@ -74,3 +91,4 @@ html {
   user-select: text;
   -webkit-touch-callout: default;
 }
+
