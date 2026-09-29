@@ -55,7 +55,7 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] responsive-container"
+      className="bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[80px] responsive-container"
     >
       <div className="mx-auto max-w-7xl px-6">
 

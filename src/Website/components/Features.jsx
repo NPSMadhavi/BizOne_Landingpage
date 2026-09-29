@@ -52,7 +52,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="w-full bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] lg:pb-[110px] responsive-container">
+    <section id="features" className="w-full bg-[#F9FAFB] py-10 sm:py-12 lg:pt-[95px] lg:pb-[105px] responsive-container">
       
       {/* Main Container */}
       <div>
