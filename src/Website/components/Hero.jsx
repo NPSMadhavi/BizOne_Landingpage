@@ -72,7 +72,7 @@ export default function Hero() {
       {/* Background blur orb */}
       <div className="absolute left-1/2 top-[-180px] h-[450px] w-[450px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[130px]" />
 
-      <div className="relative mx-auto flex max-w-[1280px] flex-col items-center px-6 pb-3 pt-[180px] lg:px-8">
+      <div className="relative mx-auto flex max-w-[1280px] flex-col items-center px-6 pb-3 pt-[160px] lg:px-8">
         {/* ── BADGE ── */}
         <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#FFFFFF] px-5 py-1 shadow-md md:mb-9 md:mt-4 md:py-2">
           <Sparkles size={18} strokeWidth={2} className="shrink-0 text-[#0072F8]" />
