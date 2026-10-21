@@ -1,6 +1,7 @@
 ﻿import { ArrowRight, Sparkles } from "lucide-react";
 import { TextLoop } from "@/components/ui/text-loop";
 import { DashboardStack } from "./DashboardStack";
+import HeroBackground from "./HeroBackground";
 
 import assetsImage    from "../assets/assets.png";
 import auditImage     from "../assets/audit.png";
@@ -40,7 +41,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-x-clip"
+      className="relative isolate overflow-x-clip"
       style={{
         background: `
           radial-gradient(
@@ -67,6 +68,7 @@ export default function Hero() {
         `,
       }}
     >
+      <HeroBackground />
       {/* Background blur orb */}
       <div className="absolute left-1/2 top-[-180px] h-[450px] w-[450px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[130px]" />
 
